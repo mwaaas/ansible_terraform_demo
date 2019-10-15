@@ -1,0 +1,41 @@
+version: "3.6"
+services:
+  dynamodb-ui:
+    depends_on:
+      - dynamodb
+    image: aaronshaf/dynamodb-admin:latest
+    environment:
+      - DYNAMO_ENDPOINT=http://dynamodb:8000
+    ports:
+      - 8001:8001
+
+  dynamodb:
+    image: amazon/dynamodb-local:1.11.477
+    command: -jar DynamoDBLocal.jar -inMemory -sharedDb
+    ports:
+      - 3307:8000
+    environment:
+      - AWS_ACCESS_KEY_ID=access_key
+      - AWS_SECRET_ACCESS_KEY=secret_key
+      - "AWS_DEFAULT_REGION=eu-west-1"
+
+  localaws:
+    image: pafortin/goaws:v0.3.1
+    ports:
+      - 4100:4100
+
+  dev_tools:
+    build:
+      context: .
+      dockerfile: DevToolsDockerfile
+    depends_on:
+      - localaws
+      - dynamodb-ui
+    links:
+      - localaws
+      - dynamodb
+    environment:
+      - ANSIBLE_STDOUT_CALLBACK=debug
+    volumes:
+      - $HOME/.aws:/root/.aws
+      - ./:/usr/src/app

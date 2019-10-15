@@ -1,0 +1,9 @@
+FROM mwaaas/ansible_playbook:latest-latest
+
+RUN pip2 install ecs-ansible-env==0.0.1.2 ansible_terraform_variables==0.0.1.3 custom_terraform==0.0.1 \
+    && mkdir -p "/root/.ansible/plugins/modules" \
+    && cp /usr/lib/python2.7/site-packages/ecs_ansible_env/ecs_env_file.py /root/.ansible/plugins/modules \
+    && cp /usr/lib/python2.7/site-packages/ansible_terraform_variables/ansible_terraform_variables.py /root/.ansible/plugins/modules \
+    && cp /usr/lib/python2.7/site-packages/custom_terraform/custom_terraform.py /root/.ansible/plugins/modules \
+    && rm -f /ansible/playbooks/roles/ansible-dot-env/meta/main.yml
+
