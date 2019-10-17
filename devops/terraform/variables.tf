@@ -34,6 +34,9 @@ variable "SNS_ENDPOINT" {
   type = string
 }
 
+variable "STS_ENDPOINT" {
+  type = string
+}
 
 variable "DEFAULT_TAGS" {
   type = "map"

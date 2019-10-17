@@ -6,14 +6,16 @@ BAR_QUEUE_NAME = "dev_bar"
 
 TABLE_NAME = "ansible_terraform_demo"
 
-TERRAFORM_ROLE_ARN =  "arn:aws:iam::309952364818:role/eng-recce-cloudformation-role"
+TERRAFORM_ROLE_ARN =  "arn:aws:iam::309952364818:role/cloudformation-to-terraform-role"
 
 
-DYNAMODB_ENDPOINT = "http://dynamodb:8000"
+DYNAMODB_ENDPOINT = "http://dynamodb_local_mock_unsupported_api:4567"
 
-SNS_ENDPOINT = "http://localaws:4100"
+SNS_ENDPOINT= "http://localaws:4575"
 
-SQS_ENDPOINT = "http://localaws:4100"
+SQS_ENDPOINT= "http://localaws:4576"
+
+STS_ENDPOINT= "http://localaws:4592"
 
 DEFAULT_TAGS = {
   Classification    = "restricted"

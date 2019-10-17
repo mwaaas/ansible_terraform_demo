@@ -9,6 +9,16 @@ services:
     ports:
       - 8001:8001
 
+  dynamodb_local_mock_unsupported_api:
+    depends_on:
+      - dynamodb
+    image: mwaside_test
+    environment:
+      - DYNAMO_HOST=dynamodb
+      - DYNAMO_PORT=8000
+    ports:
+      - 8002:4567
+
   dynamodb:
     image: amazon/dynamodb-local:1.11.477
     command: -jar DynamoDBLocal.jar -inMemory -sharedDb
@@ -19,10 +29,17 @@ services:
       - AWS_SECRET_ACCESS_KEY=secret_key
       - "AWS_DEFAULT_REGION=eu-west-1"
 
+  # localaws endpoints configuration  documentation
+  # https://github.com/localstack/localstack#overview
   localaws:
-    image: pafortin/goaws:v0.3.1
+    image: localstack/localstack:0.10.4
     ports:
-      - 4100:4100
+      - "4567-4584:4567-4584"
+      - "${PORT_WEB_UI-8088}:${PORT_WEB_UI-8080}"
+    environment:
+      - "SERVICES=sts,sqs,sns,cloudformation:4581"
+      - DEFAULT_REGION=eu-west-1
+      - "HOSTNAME_EXTERNAL=${HOSTNAME_EXTERNAL-localaws}"
 
   dev_tools:
     build:
@@ -30,10 +47,12 @@ services:
       dockerfile: DevToolsDockerfile
     depends_on:
       - localaws
+      - dynamodb_local_mock_unsupported_api
       - dynamodb-ui
     links:
       - localaws
       - dynamodb
+    working_dir: /usr/src/app/devops
     environment:
       - ANSIBLE_STDOUT_CALLBACK=debug
     volumes:
