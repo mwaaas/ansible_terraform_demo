@@ -34,3 +34,4 @@ build/
 #
 .terraform
 .mvn
+devops/terraform/terraform.tfstate
