@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>ansible_terraform_demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>ansible_terraform_demo</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -95,6 +95,14 @@
                 </dependencies>
             </plugin>
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>co.leantechniques</groupId>
+                <artifactId>maven-buildtime-extension</artifactId>
+                <version>2.0.2</version>
+            </extension>
+        </extensions>
     </build>
 
 </project>
