@@ -15,7 +15,7 @@ dev_setup:
 	# delete state files in development
 	rm -f ./devops/terraform/terraform.tfstate ./devops/terraform/terraform.tfstate.backup
 	# start containers required
-	docker-compose up -d dynamodb_local_mock_unsupported_api dynamodb-ui
+	docker-compose up -d dynamodb_local_mock_unsupported_api dynamodb-ui sns_simulator
 
 	$(MAKE) build_app_image
 	# force create to use new containes
