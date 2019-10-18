@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - default.env
-    links:
-      - localaws
     volumes:
       - $HOME/.ssh/:/root/.ssh
       - $HOME/.aws:/root/.aws
