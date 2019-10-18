@@ -14,7 +14,7 @@ variable "BAR_QUEUE_NAME" {
   type = string
 }
 
-variable "TABLE_NAME" {
+variable "EVENT_TABLE_NAME" {
   type = string
 }
 

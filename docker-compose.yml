@@ -21,7 +21,7 @@ services:
     ports:
       - 8001:8001
 
-  dynamodb_local_mock_unsupported_api:
+  dynamodb-local-mock-unsupported-api:
     depends_on:
       - dynamodb
     image: mwaaas/dynamodb_local_mock_unsupported_api:latest
@@ -68,7 +68,7 @@ services:
       dockerfile: DevToolsDockerfile
     depends_on:
       - localaws
-      - dynamodb_local_mock_unsupported_api
+      - dynamodb-local-mock-unsupported-api
       - dynamodb-ui
     links:
       - localaws

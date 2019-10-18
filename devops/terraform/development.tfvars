@@ -4,12 +4,12 @@ FOO_QUEUE_NAME = "dev_foo"
 BAR_TOPIC_NAME = "dev_bar_topic"
 BAR_QUEUE_NAME = "dev_bar"
 
-TABLE_NAME = "ansible_terraform_demo"
+EVENT_TABLE_NAME = "ansible_terraform_demo"
 
 TERRAFORM_ROLE_ARN =  "arn:aws:iam::309952364818:role/cloudformation-to-terraform-role"
 
 
-DYNAMODB_ENDPOINT = "http://dynamodb_local_mock_unsupported_api:4567"
+DYNAMODB_ENDPOINT = "http://dynamodb-local-mock-unsupported-api:4567"
 
 SNS_ENDPOINT= "http://localaws:4575"
 

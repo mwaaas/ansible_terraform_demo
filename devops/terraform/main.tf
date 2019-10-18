@@ -24,9 +24,9 @@ module "bar_queue" {
   DEFAULT_TAGS = var.DEFAULT_TAGS
 }
 
-module "table" {
+module "event_table" {
   source         = "./tf_modules/dyanamodb"
   READ_CAPACITY  = "20"
-  TABLE_NAME     = var.TABLE_NAME
+  TABLE_NAME     = var.EVENT_TABLE_NAME
   WRITE_CAPACITY = "20"
 }
