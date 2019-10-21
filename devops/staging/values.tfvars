@@ -1,21 +1,19 @@
-FOO_TOPIC_NAME = "dev_foo_topic"
-FOO_QUEUE_NAME = "dev_foo"
+FOO_TOPIC_NAME = "stag_foo_topic"
+FOO_QUEUE_NAME = "stag_foo"
 
-BAR_TOPIC_NAME = "dev_bar_topic"
-BAR_QUEUE_NAME = "dev_bar"
+BAR_TOPIC_NAME = "stag_bar_topic"
+BAR_QUEUE_NAME = "stag_bar"
 
 EVENT_TABLE_NAME = "ansible_terraform_demo"
 
 TERRAFORM_ROLE_ARN =  "arn:aws:iam::309952364818:role/cloudformation-to-terraform-role"
 
 
-DYNAMODB_ENDPOINT = "http://dynamodb-local-mock-unsupported-api:4567"
-
-SNS_ENDPOINT= "http://localaws:4575"
-
-SQS_ENDPOINT= "http://localaws:4576"
-
-STS_ENDPOINT= "http://localaws:4592"
+# Using actual aws endpoints
+DYNAMODB_ENDPOINT = ""
+SNS_ENDPOINT= ""
+SQS_ENDPOINT= ""
+STS_ENDPOINT= ""
 
 DEFAULT_TAGS = {
   Classification    = "restricted"
