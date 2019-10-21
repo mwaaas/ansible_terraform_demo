@@ -26,7 +26,7 @@ deploy:
 	@if [ $(env) = "development" ]; then\
         $(MAKE) dev_setup;\
     fi
-	docker-compose run $(no_deps) dev_tools bash -c "cd terraform && terraform init && terraform apply -input=false -var-file=values.tfvars $(autoApprove)"
+	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform apply -input=false -var-file=$(env).tfvars $(autoApprove)"
 	docker-compose up app
 
 list_queues:
