@@ -4,9 +4,9 @@ FOO_QUEUE_NAME = "stag_foo"
 BAR_TOPIC_NAME = "stag_bar_topic"
 BAR_QUEUE_NAME = "stag_bar"
 
-EVENT_TABLE_NAME = "ansible_terraform_demo"
+EVENT_TABLE_NAME = "stag_ansible_terraform_demo"
 
-TERRAFORM_ROLE_ARN =  "arn:aws:iam::309952364818:role/cloudformation-to-terraform-role"
+TERRAFORM_ROLE_ARN =  "arn:aws:iam::354955808555:role/terraform"
 
 
 # Using actual aws endpoints
