@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - default.env
+      - "devops/app_env/${ENV_FILE}.env"
     volumes:
       - $HOME/.ssh/:/root/.ssh
       - $HOME/.aws:/root/.aws
@@ -57,6 +57,8 @@ services:
   # via http request hence you can use postman and curl
   sns_simulator:
     image: mwaaas/aws_helper:0.0.4
+    environment:
+      - AWS_PROFILE=mwaside
     volumes:
       - $HOME/.aws:/root/.aws
     ports:

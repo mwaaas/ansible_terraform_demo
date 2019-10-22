@@ -9,4 +9,16 @@ Content-Type: application/json
   "endpoint": "http://localaws:4575"
 }
 
+### staging now
+POST http://localhost:4200/sns/send_message
+Content-Type: application/json
+
+{"message": {
+  "foo": "text"
+},
+  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:stag_bar_topic",
+  "MessageStructure": "raw",
+  "endpoint": ""
+}
+
 ###

@@ -11,5 +11,5 @@ module "app" {
   SQS_ENDPOINT = var.SQS_ENDPOINT
   STS_ENDPOINT = var.STS_ENDPOINT
   TERRAFORM_ROLE_ARN = var.TERRAFORM_ROLE_ARN
-  PROFILE = "mwaside"
+  PROFILE = "default"
 }

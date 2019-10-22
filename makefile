@@ -2,8 +2,14 @@ env=development
 no_deps :=  $(shell [ $(env) = development ] && echo "" || echo --no-deps)
 autoApprove := $(shell [ $(env) = development ] && echo "-auto-approve" || echo )
 
-up_app: build_app_image
-	docker-compose up app
+.EXPORT_ALL_VARIABLES:
+ENV_FILE=$(env)
+
+
+build_up: build_app_image up_app
+
+up_app:
+	docker-compose up --force-recreate app
 
 build_app_image:
 	# build app container since docker compose build does not support
@@ -13,7 +19,7 @@ build_app_image:
 
 dev_setup:
 	# delete state files in development
-	rm -f ./devops/terraform/terraform.tfstate ./devops/terraform/terraform.tfstate.backup
+	rm -f ./devops/$(env)/terraform.tfstate ./devops/$(env)/terraform.tfstate.backup
 	# start containers required
 	docker-compose up -d dynamodb-local-mock-unsupported-api dynamodb-ui sns_simulator
 
@@ -22,12 +28,18 @@ dev_setup:
 	# i.e clean copy without anyting installed sns or sqs and tables
 	docker-compose up -d --force-recreate localaws dynamodb
 
+terraform:
+	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform apply -input=false -var-file=values.tfvars $(autoApprove)"
+
 deploy:
 	@if [ $(env) = "development" ]; then\
         $(MAKE) dev_setup;\
     fi
-	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform apply -input=false -var-file=values.tfvars $(autoApprove)"
-	docker-compose up app
+	$(MAKE) terraform
+	$(MAKE) up_app
+
+destroy:
+	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform destroy -input=false -var-file=values.tfvars $(autoApprove)"
 
 list_queues:
 	 aws --endpoint-url=http://localhost:4576 sqs list-queues

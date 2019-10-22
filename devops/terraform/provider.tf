@@ -1,6 +1,7 @@
 provider "aws" {
   region  = "eu-west-1"
   version = "~> 2.31"
+  profile = var.PROFILE
   endpoints {
     dynamodb = var.DYNAMODB_ENDPOINT
     sqs      = var.SQS_ENDPOINT
