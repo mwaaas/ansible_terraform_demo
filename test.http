@@ -21,4 +21,17 @@ Content-Type: application/json
   "endpoint": ""
 }
 
+### production
+
+POST http://localhost:4200/sns/send_message
+Content-Type: application/json
+
+{"message": {
+  "foo": "text"
+},
+  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:prod_bar_topic",
+  "MessageStructure": "raw",
+  "endpoint": ""
+}
+
 ###
