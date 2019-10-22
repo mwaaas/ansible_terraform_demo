@@ -1,13 +1,14 @@
-FOO_TOPIC_NAME = "stag_foo_topic"
-FOO_QUEUE_NAME = "stag_foo"
+FOO_TOPIC_NAME = "prod_foo_topic"
+FOO_QUEUE_NAME = "prod_foo"
 
-BAR_TOPIC_NAME = "stag_bar_topic"
-BAR_QUEUE_NAME = "stag_bar"
+BAR_TOPIC_NAME = "prod_bar_topic"
+BAR_QUEUE_NAME = "prod_bar"
 
-EVENT_TABLE_NAME = "stag_ansible_terraform_demo"
+EVENT_TABLE_NAME = "prod_ansible_terraform_demo"
 
 TERRAFORM_ROLE_ARN =  "arn:aws:iam::354955808555:role/terraform"
 
+PROFILE = "mwaside"
 
 # Using actual aws endpoints
 DYNAMODB_ENDPOINT = ""

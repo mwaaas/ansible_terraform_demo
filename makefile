@@ -38,6 +38,7 @@ deploy:
 	$(MAKE) terraform
 	$(MAKE) up_app
 
+
 destroy:
 	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform destroy -input=false -var-file=values.tfvars $(autoApprove)"
 

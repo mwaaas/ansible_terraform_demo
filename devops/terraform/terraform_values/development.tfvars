@@ -17,6 +17,8 @@ SQS_ENDPOINT= "http://localaws:4576"
 
 STS_ENDPOINT= "http://localaws:4592"
 
+PROFILE = "mwaside"
+
 DEFAULT_TAGS = {
   Classification    = "restricted"
   Environment       = "staging"
