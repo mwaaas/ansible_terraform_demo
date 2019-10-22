@@ -1,6 +1,10 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+locals {
+  topic_arn = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.TOPIC_ARN}"
+}
+
 resource "aws_sqs_queue" "demo_deadletter" {
   name = "${var.QUEUE_NAME }_dl"
   tags = merge(var.DEFAULT_TAGS, map("Name", "${var.QUEUE_NAME }_dl"))
@@ -22,10 +26,37 @@ resource "aws_sqs_queue" "demo_sqs" {
 
 resource "aws_sns_topic_subscription" "demo_topic_subscription" {
   depends_on = [
-    aws_sqs_queue.demo_sqs
+    aws_sqs_queue.demo_sqs,
+    aws_sqs_queue_policy.demo_sqs_subscription
   ]
   endpoint = aws_sqs_queue.demo_sqs.arn
   protocol = "sqs"
-  topic_arn = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.TOPIC_ARN}"
+  topic_arn = local.topic_arn
   raw_message_delivery = false
+}
+
+
+resource "aws_sqs_queue_policy" "demo_sqs_subscription" {
+  queue_url = aws_sqs_queue.demo_sqs.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "sqspolicy",
+  "Statement": [
+    {
+      "Sid": "First",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "sqs:SendMessage",
+      "Resource": "${aws_sqs_queue.demo_sqs.arn}",
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "${local.topic_arn}"
+        }
+      }
+    }
+  ]
+}
+POLICY
 }
