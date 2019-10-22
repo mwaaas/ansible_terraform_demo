@@ -34,6 +34,8 @@ class DynamoDbConfig(
 
     @Bean
     fun dynamoDBMapperConfig(): DynamoDBMapperConfig {
-        return DynamoDBMapperConfig.Builder().build()
+        val builder = DynamoDBMapperConfig.builder()
+        builder.tableNameResolver = DynamoDbTableNameResolver()
+        return builder.build()
     }
 }

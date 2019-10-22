@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable
 
-@DynamoDBTable(tableName = "ansible_terraform_demo")
+@DynamoDBTable(tableName = "EVENT_TABLE_NAME")
 class EventMessageEntity {
 
     @DynamoDBHashKey
