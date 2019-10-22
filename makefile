@@ -29,7 +29,7 @@ dev_setup:
 	docker-compose up -d --force-recreate localaws dynamodb
 
 terraform:
-	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform apply -input=false -var-file=values.tfvars $(autoApprove)"
+	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terragrunt apply -input=false $(autoApprove)"
 
 deploy:
 	@if [ $(env) = "development" ]; then\
@@ -39,7 +39,7 @@ deploy:
 	$(MAKE) up_app
 
 destroy:
-	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform destroy -input=false -var-file=values.tfvars $(autoApprove)"
+	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terragrunt destroy -input=false $(autoApprove)"
 
 list_queues:
 	 aws --endpoint-url=http://localhost:4576 sqs list-queues
