@@ -1,10 +1,15 @@
 env=development
-no_deps :=  $(shell [ $(env) = development ] && echo "" || echo --no-deps)
-autoApprove := $(shell [ $(env) = development ] && echo "-auto-approve" || echo )
+config=$(env)
+workspace=$(env)
+no_deps :=  $(shell [ $(config) = development ] && echo "" || echo --no-deps)
+autoApprove := $(shell [ $(config) = development ] && echo "-auto-approve" || echo )
+
+ifeq ($(config), production)
+workspace=default
+endif
 
 .EXPORT_ALL_VARIABLES:
-ENV_FILE=$(env)
-
+ENV_FILE=$(config)
 
 build_up: build_app_image up_app
 
@@ -19,7 +24,7 @@ build_app_image:
 
 dev_setup:
 	# delete state files in development
-	rm -f ./devops/$(env)/terraform.tfstate ./devops/$(env)/terraform.tfstate.backup
+	rm -f ./devops/terraform/terraform.tfstate.d/development/terraform.tfstate ./devops/terraform/terraform.tfstate.d/development/terraform.tfstate.backup
 	# start containers required
 	docker-compose up -d dynamodb-local-mock-unsupported-api dynamodb-ui sns_simulator
 
@@ -28,11 +33,12 @@ dev_setup:
 	# i.e clean copy without anyting installed sns or sqs and tables
 	docker-compose up -d --force-recreate localaws dynamodb
 
+
 terraform:
-	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform apply -input=false -var-file=values.tfvars $(autoApprove)"
+	docker-compose run $(no_deps) dev_tools bash -c "cd terraform && terraform workspace new $(workspace) | true && terraform workspace select $(workspace)&& terraform workspace show && terraform init && terraform apply -input=false -var-file=terraform_values/$(config).tfvars $(autoApprove)"
 
 deploy:
-	@if [ $(env) = "development" ]; then\
+	@if [ $(config) = "development" ]; then\
         $(MAKE) dev_setup;\
     fi
 	$(MAKE) terraform
@@ -40,7 +46,7 @@ deploy:
 
 
 destroy:
-	docker-compose run $(no_deps) dev_tools bash -c "cd $(env) && terraform init && terraform destroy -input=false -var-file=values.tfvars $(autoApprove)"
+	docker-compose run $(no_deps) dev_tools bash -c "cd terraform && terraform workspace new $(workspace) | true && terraform workspace select $(workspace) && terraform workspace show && terraform init && terraform destroy -input=false -var-file=terraform_values/$(config).tfvars $(autoApprove)"
 
 list_queues:
 	 aws --endpoint-url=http://localhost:4576 sqs list-queues
