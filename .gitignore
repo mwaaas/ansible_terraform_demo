@@ -35,3 +35,10 @@ build/
 .terraform
 .mvn
 devops/terraform/terraform.tfstate
+
+.gradle
+devops/terraform/sqs.tf
+devops/terraform/terrafor.log
+devops/terraform.tfstate.d/*.
+devops/terraform/terraform.tfstate.d
+devops/terraform/sns_topics.tf
