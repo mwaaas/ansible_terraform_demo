@@ -1,0 +1,39 @@
+- set_fact:
+    eventNamesGenerated: >
+      {{ eventNamesGenerated | default([])|list }} +
+      [
+      { 'name': '{{item.name}}',
+        'version': '{{item.version}}',
+        'topic_name': '{{item.topic_name|lower}}_{{ item.topic_version| default("1") }}',
+        'combined': '{{item.name}}-{{item.version}}',
+        'combined_with_underscore': '{{item.name}}_{{item.version}}',
+        'combinedAlphaNumeric': '{{item.name|title}}{{item.version | title}}',
+        'queue_name': '{{ QUEUE_NAME }}_{{item.name | lower }}_{{item.version}}'
+        } ]
+  with_items:
+    - "{{ EventNames }}"
+  tags:
+    - always
+
+- set_fact:
+    eventNamesQueues: >
+      {{ eventNamesQueues | default([])|list }} +
+      [
+      { 'key': '{{item.combined_with_underscore}}',
+        'value': '{{item.queue_name}}'
+        } ]
+  with_items:
+    - "{{ eventNamesGenerated }}"
+  tags:
+    - always
+
+- block:
+    - include_role:
+        name: ansible-dot-env
+      vars:
+        dot_env_file_create: true
+        dot_env_file_purge: true
+        dot_env_file_path: ./templates/build/envs/sqs_env.env
+        dot_env_example_file_enable: false
+        dot_env_key_value_items: "{{ eventNamesQueues }}"
+  tags: always

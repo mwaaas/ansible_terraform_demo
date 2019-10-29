@@ -1,12 +1,12 @@
 provider "aws" {
   region  = "eu-west-1"
   version = "~> 2.31"
-  profile = var.PROFILE
+  profile = var.AWS_PROFILE
   endpoints {
-    dynamodb = var.DYNAMODB_ENDPOINT
-    sqs      = var.SQS_ENDPOINT
-    sns      = var.SNS_ENDPOINT
-    sts      = var.STS_ENDPOINT
+    dynamodb = var.AWS_DYNAMODB_ENDPOINT
+    sqs      = var.AWS_SQS_ENDPOINT
+    sns      = var.AWS_SNS_ENDPOINT
+    sts      = var.AWS_STS_ENDPOINT
   }
   assume_role {
     role_arn = var.TERRAFORM_ROLE_ARN

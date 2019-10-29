@@ -1,0 +1,7 @@
+CONFIG_NAMESPACE: dev
+AWS_USE_LOCAL_AWS:  true
+AWS_DYNAMODB_ENDPOINT: "http://dynamodb-local-mock-unsupported-api:4567"
+AWS_SNS_ENDPOINT: "http://localaws:4575"
+AWS_SQS_ENDPOINT: "http://localaws:4576"
+AWS_STS_ENDPOINT: "http://localaws:4592"
+DYNAMODB_ENDPOINT:  http://dynamodb-local-mock-unsupported-api:4567

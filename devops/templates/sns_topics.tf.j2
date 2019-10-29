@@ -1,0 +1,9 @@
+{% for i in eventNamesGenerated %}
+
+module "Sns{{i.combinedAlphaNumeric}}" {
+  source = "./tf_modules/sns"
+  TOPIC_NAME = "{{i.topic_name}}"
+  DEFAULT_TAGS = var.DEFAULT_TAGS
+}
+
+{% endfor %}

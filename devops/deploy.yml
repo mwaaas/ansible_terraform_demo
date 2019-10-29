@@ -1,0 +1,68 @@
+---
+- hosts: 127.0.0.1
+  gather_facts: no
+  become: no
+  connection: local
+  vars_files:
+    - ./group_vars/all.yml
+    - ./group_vars/{{ CONFIG }}.yml
+
+  tasks:
+    - name: Create build folder if does not exists
+      file:
+        path: "templates/build"
+        state: directory
+      tags:
+        - always
+
+    - name: configure event names
+      include: playbooks/configure_event_names.yml
+
+
+    - name: generate sns terraform
+      template: src=templates/sns_topics.tf.j2
+        dest=terraform/sns_topics.tf
+      when:
+        - CONFIG != "production"
+        - GenerateSnsTopicsForTesting
+
+    - name: generate sqs terraform
+      template: src=templates/sqs_queues.tf.j2
+        dest=terraform/sqs.tf
+
+    - name: don't provision sns topics in production
+      file: path=templates/terraform/simulator_sns.tf state=absent
+      when:
+        - CONFIG == "production"
+        - not GenerateSnsTopicsForTesting
+
+    - name: terraform init
+      command: terraform init
+      args:
+        chdir: terraform
+
+    - name: get terraform variables
+      ansible_terraform_variables:
+        path: terraform
+      register: get_terraform_results
+
+    - name: prepare terraform variables
+      set_fact:
+        terraformVariables: '{{ terraformVariables | default({})| combine({item: lookup("vars", "{{item}}")})}}'
+      with_items: "{{get_terraform_results.terraformVariables}}"
+
+
+    - name: delete old terraform logs
+      file: path=terraform/terrafor.log state=absent
+
+    # https://docs.ansible.com/ansible/latest/modules/terraform_module.html
+    - name: provision terraform
+      custom_terraform:
+        project_path: ./terraform
+        state: present
+        workspace: "{{STACK_NAME}}"
+        variables: "{{terraformVariables}}"
+      register: terraform
+
+    - name: terraform output
+      debug: msg="{{terraform.stdout}}"

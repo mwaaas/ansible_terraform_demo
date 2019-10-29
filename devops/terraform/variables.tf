@@ -1,22 +1,7 @@
-variable "PROFILE" {
+variable "AWS_PROFILE" {
   type = string
 }
 
-variable "FOO_TOPIC_NAME" {
-  type = string
-}
-
-variable "FOO_QUEUE_NAME" {
-  type = string
-}
-
-variable "BAR_TOPIC_NAME" {
-  type = string
-}
-
-variable "BAR_QUEUE_NAME" {
-  type = string
-}
 
 variable "EVENT_TABLE_NAME" {
   type = string
@@ -26,19 +11,19 @@ variable "TERRAFORM_ROLE_ARN" {
   type = string
 }
 
-variable "DYNAMODB_ENDPOINT" {
+variable "AWS_DYNAMODB_ENDPOINT" {
   type = string
 }
 
-variable "SQS_ENDPOINT" {
+variable "AWS_SQS_ENDPOINT" {
   type = string
 }
 
-variable "SNS_ENDPOINT" {
+variable "AWS_SNS_ENDPOINT" {
   type = string
 }
 
-variable "STS_ENDPOINT" {
+variable "AWS_STS_ENDPOINT" {
   type = string
 }
 

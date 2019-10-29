@@ -1,0 +1,46 @@
+APP: ansible_terraform_demo
+CONFIG_NAMESPACE: "{{CONFIG[0:4]}}"
+ENV_NAMESPACE: "{% if ENV != CONFIG  %}{{ ENV }}{% endif %}"
+
+SERVICE_NAME: "ansible_terraform_demo"
+STACK_PREFIX: "{{ CONFIG_NAMESPACE }}{% if ENV_NAMESPACE !='' %}_{{ ENV_NAMESPACE }}{% endif %}"
+STACK_NAME: "{{ STACK_PREFIX }}_{{ SERVICE_NAME }}"
+
+GenerateSnsTopicsForTesting: true
+
+TERRAFORM_ROLE_ARN: "arn:aws:iam::354955808555:role/terraform"
+# AWS configs
+# using staging envs
+AWS_USE_LOCAL_AWS: false
+AWS_SQS_ENDPOINT: ""
+AWS_DYNAMODB_ENDPOINT: ""
+AWS_SNS_ENDPOINT: ""
+AWS_STS_ENDPOINT: ""
+EVENT_TABLE_NAME: "{{ENV}}_ansible_terraform_demo"
+
+# to avoid reaching the maximum limit of 80 words we get a substring of environment.
+QUEUE_NAME: "{{STACK_NAME}}_sqsqueues"
+
+
+EventNames:
+  - name: foo
+    topic_name: "foo"
+    # not required it will default to 1 adding it here as an example if you want to customize topic version
+    topic_version: 1
+    version: v1
+  - name: bar
+    topic_name: "bar"
+    version: v1
+
+DEFAULT_TAGS:
+  Classification: "restricted"
+  Environment: "{{ENV}}"
+  Owner: "sysdev"
+  Status: "active"
+
+  # Queue names
+FOO_QUEUE_NAME: prod_foo
+BAR_QUEUE_NAME:  prod_bar
+
+AWS_PROFILE: mwaside
+AWS_REGION: eu-west-1

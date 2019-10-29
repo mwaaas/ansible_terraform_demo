@@ -11,6 +11,11 @@ endif
 .EXPORT_ALL_VARIABLES:
 ENV_FILE=$(config)
 
+ANSIBLE_PLAYBOOK_DEPLOY = docker-compose run $(no_deps) --rm \
+							dev_tools ansible-playbook deploy.yml \
+							-e "ENV=$(env)" -e "CONFIG=$(config)" \
+							$(ansible_env)
+
 build_up: build_app_image up_app
 
 up_app:
@@ -24,7 +29,7 @@ build_app_image:
 
 dev_setup:
 	# delete state files in development
-	rm -f ./devops/terraform/terraform.tfstate.d/development/terraform.tfstate ./devops/terraform/terraform.tfstate.d/development/terraform.tfstate.backup
+	rm -r -f ./devops/terraform/terraform.tfstate.d/dev_ansible_terraform_demo/
 	# start containers required
 	docker-compose up -d dynamodb-local-mock-unsupported-api dynamodb-ui sns_simulator
 
@@ -34,14 +39,28 @@ dev_setup:
 	docker-compose up -d --force-recreate localaws dynamodb
 
 
-terraform:
-	docker-compose run $(no_deps) dev_tools bash -c "cd terraform && terraform workspace new $(workspace) | true && terraform workspace select $(workspace)&& terraform workspace show && terraform init && terraform apply -input=false -var-file=terraform_values/$(config).tfvars $(autoApprove)"
+ansible_playbooks:
+ifdef tags
+	$(ANSIBLE_PLAYBOOK_DEPLOY) -t $(tags)
+else
+	$(ANSIBLE_PLAYBOOK_DEPLOY)
+endif
 
-deploy:
+
+create_sqs_file_if_does_not_exist:
+	mkdir -p ./devops/templates/build/envs
+	if [ ! -f ./devops/templates/build/envs/sqs_env.env ]; then \
+         touch ./devops/templates/build/envs/sqs_env.env; \
+     fi
+	if [ ! -f ./devops/templates/build/envs/external_services.env ]; then \
+		  touch ./devops/templates/build/envs/external_services.env; \
+	  fi
+
+deploy: create_sqs_file_if_does_not_exist
 	@if [ $(config) = "development" ]; then\
         $(MAKE) dev_setup;\
     fi
-	$(MAKE) terraform
+	$(MAKE) ansible_playbooks
 	$(MAKE) up_app
 
 

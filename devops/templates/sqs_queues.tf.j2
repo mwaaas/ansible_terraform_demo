@@ -1,0 +1,10 @@
+{% for i in eventNamesGenerated %}
+
+module "Sqs{{i.combinedAlphaNumeric}}" {
+  source = "./tf_modules/sqs"
+  QUEUE_NAME = "{{i.queue_name}}"
+  TOPIC_ARN = "{{i.topic_name}}"
+  DEFAULT_TAGS = var.DEFAULT_TAGS
+}
+
+{% endfor %}
