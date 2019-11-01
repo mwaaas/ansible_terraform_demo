@@ -4,7 +4,7 @@ Content-Type: application/json
 {"message": {
   "foo": "bar"
 },
-  "TopicArn": "arn:aws:sns:eu-west-1:000000000000:dev_bar_topic",
+  "TopicArn": "arn:aws:sns:eu-west-1:000000000000:bar_1",
   "MessageStructure": "raw",
   "endpoint": "http://localaws:4575"
 }

@@ -55,6 +55,11 @@
     - name: delete old terraform logs
       file: path=terraform/terrafor.log state=absent
 
+
+    - name: generate env
+      template: src=templates/env_template.env.j2
+        dest=templates/build/envs/env.env
+
     # https://docs.ansible.com/ansible/latest/modules/terraform_module.html
     - name: provision terraform
       custom_terraform:

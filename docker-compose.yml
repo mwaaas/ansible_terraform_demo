@@ -5,7 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - "devops/app_env/${ENV_FILE}.env"
+      - devops/templates/build/envs/sqs_env.env
+      - devops/templates/build/envs/env.env
     volumes:
       - $HOME/.ssh/:/root/.ssh
       - $HOME/.aws:/root/.aws
