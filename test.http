@@ -16,7 +16,7 @@ Content-Type: application/json
 {"message": {
   "foo": "text"
 },
-  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:stag_bar_topic",
+  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:bar_1",
   "MessageStructure": "raw",
   "endpoint": ""
 }
@@ -29,7 +29,7 @@ Content-Type: application/json
 {"message": {
   "foo": "text"
 },
-  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:prod_bar_topic",
+  "TopicArn": "arn:aws:sns:eu-west-1:354955808555:bar_1",
   "MessageStructure": "raw",
   "endpoint": ""
 }

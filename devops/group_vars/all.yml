@@ -16,6 +16,7 @@ AWS_SQS_ENDPOINT: ""
 AWS_DYNAMODB_ENDPOINT: ""
 AWS_SNS_ENDPOINT: ""
 AWS_STS_ENDPOINT: ""
+DYNAMODB_ENDPOINT: ""
 EVENT_TABLE_NAME: "{{ENV}}_ansible_terraform_demo"
 
 # to avoid reaching the maximum limit of 80 words we get a substring of environment.
