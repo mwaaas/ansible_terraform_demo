@@ -36,38 +36,15 @@
         - CONFIG == "production"
         - not GenerateSnsTopicsForTesting
 
-    - name: terraform init
-      command: terraform init
-      args:
-        chdir: terraform
-
-    - name: get terraform variables
-      ansible_terraform_variables:
-        path: terraform
-      register: get_terraform_results
-
-    - name: prepare terraform variables
-      set_fact:
-        terraformVariables: '{{ terraformVariables | default({})| combine({item: lookup("vars", "{{item}}")})}}'
-      with_items: "{{get_terraform_results.terraformVariables}}"
-
-
-    - name: delete old terraform logs
-      file: path=terraform/terrafor.log state=absent
-
+    - name: provision terraform
+      include_role:
+        name: ansible-terraform
+      vars:
+        terraform_path: "./terraform"
+        terraform_state: "{{TERRAFORM_STATE}}"
+        workspace: "{{STACK_NAME}}"
 
     - name: generate env
       template: src=templates/env_template.env.j2
         dest=templates/build/envs/env.env
 
-    # https://docs.ansible.com/ansible/latest/modules/terraform_module.html
-    - name: provision terraform
-      custom_terraform:
-        project_path: ./terraform
-        state: present
-        workspace: "{{STACK_NAME}}"
-        variables: "{{terraformVariables}}"
-      register: terraform
-
-    - name: terraform output
-      debug: msg="{{terraform.stdout}}"

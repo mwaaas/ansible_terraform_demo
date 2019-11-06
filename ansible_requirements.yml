@@ -1,3 +1,8 @@
 - src: https://github.com/antarctica/ansible-dot-env
   scm: git
   name: ansible-dot-env
+
+- src: https://github.com/mwaaas/ansible-terraform
+  scm: git
+  version: 5f2ba667743f478ce9ae5dac6081058cfe51f2b2
+  name: ansible-terraform
