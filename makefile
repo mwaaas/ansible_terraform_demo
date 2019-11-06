@@ -3,6 +3,7 @@ config=$(env)
 workspace=$(env)
 no_deps :=  $(shell [ $(config) = development ] && echo "" || echo --no-deps)
 autoApprove := $(shell [ $(config) = development ] && echo "-auto-approve" || echo )
+state=present
 
 ifeq ($(config), production)
 workspace=default
@@ -14,6 +15,7 @@ ENV_FILE=$(config)
 ANSIBLE_PLAYBOOK_DEPLOY = docker-compose run $(no_deps) --rm \
 							dev_tools ansible-playbook deploy.yml \
 							-e "ENV=$(env)" -e "CONFIG=$(config)" \
+							-e "TERRAFORM_STATE=$(state)" \
 							$(ansible_env)
 
 build_up: build_app_image up_app
@@ -65,7 +67,7 @@ deploy: create_sqs_file_if_does_not_exist
 
 
 destroy:
-	docker-compose run $(no_deps) dev_tools bash -c "cd terraform && terraform workspace new $(workspace) | true && terraform workspace select $(workspace) && terraform workspace show && terraform init && terraform destroy -input=false -var-file=terraform_values/$(config).tfvars $(autoApprove)"
+	 $(MAKE) ansible_playbooks state=absent
 
 list_queues:
 	 aws --endpoint-url=http://localhost:4576 sqs list-queues

@@ -9,6 +9,7 @@ STACK_NAME: "{{ STACK_PREFIX }}_{{ SERVICE_NAME }}"
 GenerateSnsTopicsForTesting: true
 
 TERRAFORM_ROLE_ARN: "arn:aws:iam::354955808555:role/terraform"
+TERRAFORM_STATE: present
 # AWS configs
 # using staging envs
 AWS_USE_LOCAL_AWS: false
@@ -36,7 +37,7 @@ EventNames:
 DEFAULT_TAGS:
   Classification: "restricted"
   Environment: "{{ENV}}"
-  Owner: "sysdev"
+  Owner: "mwas"
   Status: "active"
 
   # Queue names
